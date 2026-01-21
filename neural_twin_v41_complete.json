@@ -1,0 +1,165 @@
+{
+  "1": {
+    "class_type": "CLIPLoader",
+    "inputs": {
+      "clip_name": "model.safetensors",
+      "type": "ltxv",
+      "device": "default"
+    },
+    "_meta": {"title": "T5 Text Encoder"}
+  },
+  "2": {
+    "class_type": "CheckpointLoaderSimple",
+    "inputs": {
+      "ckpt_name": "ltx-video-2b-v0.9.safetensors"
+    },
+    "_meta": {"title": "LTX Video 2B"}
+  },
+  "3": {
+    "class_type": "LoadImage",
+    "inputs": {
+      "image": "Varun-Mayya.jpeg"
+    },
+    "_meta": {"title": "Input Image"}
+  },
+  "4": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "raw footage, 4k, shot on iPhone, news interview style, realistic skin texture, imperfections, natural lighting, looking at camera, slight head movement, breathing, blinking, amateur video, uncompressed",
+      "clip": ["1", 0]
+    },
+    "_meta": {"title": "Positive Prompt"}
+  },
+  "5": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "CGI, 3D render, animation, anime, cartoon, smoothing, plastic skin, low quality, glitch",
+      "clip": ["1", 0]
+    },
+    "_meta": {"title": "Negative Prompt"}
+  },
+  "6": {
+    "class_type": "LTXVConditioning",
+    "inputs": {
+      "frame_rate": 25,
+      "positive": ["4", 0],
+      "negative": ["5", 0]
+    },
+    "_meta": {"title": "LTX Conditioning"}
+  },
+  "7": {
+    "class_type": "LTXVImgToVideo",
+    "inputs": {
+      "width": 768,
+      "height": 512,
+      "length": 97,
+      "batch_size": 1,
+      "image_noise": 0.15,
+      "strength": 0.95,
+      "positive": ["6", 0],
+      "negative": ["6", 1],
+      "vae": ["2", 2],
+      "image": ["3", 0]
+    },
+    "_meta": {"title": "Image to Video"}
+  },
+  "8": {
+    "class_type": "LTXVApplySTG",
+    "inputs": {
+      "block_indices": "14, 19",
+      "model": ["2", 0]
+    },
+    "_meta": {"title": "Apply STG Blocks"}
+  },
+  "9": {
+    "class_type": "STGGuider",
+    "inputs": {
+      "cfg": 1.0,
+      "stg": 1.0,
+      "rescale": 0.7,
+      "model": ["8", 0],
+      "positive": ["7", 0],
+      "negative": ["7", 1]
+    },
+    "_meta": {"title": "STG Guider"}
+  },
+  "10": {
+    "class_type": "LTXVScheduler",
+    "inputs": {
+      "steps": 30,
+      "max_shift": 1.0,
+      "base_shift": 0.95,
+      "terminal": 0.1,
+      "stretch": true
+    },
+    "_meta": {"title": "LTX Scheduler"}
+  },
+  "11": {
+    "class_type": "KSamplerSelect",
+    "inputs": {
+      "sampler_name": "euler"
+    },
+    "_meta": {"title": "Euler Sampler"}
+  },
+  "12": {
+    "class_type": "RandomNoise",
+    "inputs": {
+      "noise_seed": 42
+    },
+    "_meta": {"title": "Random Noise"}
+  },
+  "13": {
+    "class_type": "SamplerCustomAdvanced",
+    "inputs": {
+      "noise": ["12", 0],
+      "guider": ["9", 0],
+      "sampler": ["11", 0],
+      "sigmas": ["10", 0],
+      "latent_image": ["7", 2]
+    },
+    "_meta": {"title": "Custom Sampler"}
+  },
+  "14": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": ["13", 0],
+      "vae": ["2", 2]
+    },
+    "_meta": {"title": "VAE Decode"}
+  },
+  "15": {
+    "class_type": "LoadAudio",
+    "inputs": {
+      "audio": "final_voice_clone.wav"
+    },
+    "_meta": {"title": "Load Voice Audio"}
+  },
+  "16": {
+    "class_type": "Wav2Lip",
+    "inputs": {
+      "images": ["14", 0],
+      "audio": ["15", 0],
+      "mode": "sequential",
+      "face_detect_batch": 8
+    },
+    "_meta": {"title": "Wav2Lip Lip-Sync"}
+  },
+  "17": {
+    "class_type": "VHS_VideoCombine",
+    "inputs": {
+      "frame_rate": 25,
+      "loop_count": 0,
+      "filename_prefix": "neural_twin_final",
+      "format": "video/h264-mp4",
+      "pix_fmt": "yuv420p",
+      "crf": 19,
+      "save_metadata": true,
+      "trim_to_audio": true,
+      "save_output": true,
+      "pingpong": false,
+      "images": ["16", 0],
+      "audio": ["16", 1]
+    },
+    "_meta": {"title": "Save Final Video"}
+  }
+}
