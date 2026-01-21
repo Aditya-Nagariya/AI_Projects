@@ -189,4 +189,86 @@ pip install -e . -v --no-build-isolation
 
 ---
 
+## 📦 PACKAGE SNAPSHOTS (For Rollback)
+
+Exact package versions saved for reproducibility:
+- `.agent/venv_packages_2026-01-21.txt` - ComfyUI venv (Python 3.11.9)
+- `.agent/env_cuda_packages_2026-01-21.txt` - env_cuda (Python 3.12)
+
+**To restore venv if broken:**
+```powershell
+cd C:\AI_Projects\ComfyUI
+python -m venv venv_backup  # Create fresh venv
+.\venv_backup\Scripts\Activate.ps1
+pip install -r .agent\venv_packages_2026-01-21.txt
+```
+
+---
+
+## 🚨 TROUBLESHOOTING GUIDE
+
+### Problem: MuseTalk fails to import
+**Symptom:** `ImportError: DLL load failed while importing _ext`
+**Cause:** mmcv compiled for wrong PyTorch version
+**Fix:**
+```powershell
+cd C:\Users\Admin\AppData\Local\Temp\mmcv_build
+.\C:\AI_Projects\ComfyUI\venv\Scripts\Activate.ps1
+pip uninstall mmcv -y
+pip install -e . -v --no-build-isolation
+```
+
+### Problem: whisper GPU error on startup
+**Symptom:** CUDA error during MuseTalk import
+**Cause:** RTX 5090 sm_120 kernels not in PyTorch
+**Fix:** Already patched in `musetalk/whisper/whisper/__init__.py` - check `device = "cpu"`
+
+### Problem: NumPy ABI mismatch
+**Symptom:** `numpy.dtype size changed, may indicate binary incompatibility`
+**Fix:**
+```powershell
+pip install git+https://github.com/jin-s13/xtcocoapi.git --force-reinstall
+```
+
+### Problem: PyTorch version mismatch in env_cuda
+**Symptom:** `OSError: [WinError 127] c10_cuda.dll`
+**Fix:**
+```powershell
+conda activate env_cuda
+pip uninstall torch torchvision torchaudio -y
+pip install torch==2.3.1 torchvision==0.18.1 torchaudio==2.3.1 --index-url https://download.pytorch.org/whl/cu121
+```
+
+### Problem: ComfyUI won't start
+**Symptom:** Python errors on `python main.py`
+**Debug:**
+```powershell
+.\venv\Scripts\Activate.ps1
+python -c "import torch; print(torch.__version__)"
+python -c "from mmcv.ops import MultiScaleDeformableAttention; print('mmcv OK')"
+python -c "from musetalk.utils.preprocessing import get_landmark_and_bbox; print('MuseTalk OK')"
+```
+
+---
+
+## ⚠️ THINGS THAT WILL BREAK (Avoid These)
+
+1. **DO NOT upgrade PyTorch** without rebuilding mmcv
+2. **DO NOT mix pip install sources** (PyPI vs pytorch.org wheel URLs)
+3. **DO NOT install nightly PyTorch** in production envs
+4. **DO NOT delete** `C:\Users\Admin\AppData\Local\Temp\mmcv_build` - needed for rebuilds
+
+---
+
+## 🔗 EXTERNAL DEPENDENCIES
+
+| Dependency | Source | Notes |
+|------------|--------|-------|
+| mmcv | Local build | `C:\Users\Admin\AppData\Local\Temp\mmcv_build` |
+| xtcocotools | GitHub | `pip install git+https://github.com/jin-s13/xtcocoapi.git` |
+| PyTorch cu124 | pytorch.org | `--index-url https://download.pytorch.org/whl/cu124` |
+| PyTorch cu121 | pytorch.org | `--index-url https://download.pytorch.org/whl/cu121` |
+
+---
+
 **END OF STATE SNAPSHOT - Ready to resume from here**
