@@ -1,0 +1,599 @@
+{
+  "last_node_id": 62,
+  "last_link_id": 73,
+  "nodes": [
+    {
+      "id": 1,
+      "type": "Note",
+      "pos": [50, 50],
+      "size": [450, 220],
+      "flags": {},
+      "order": 0,
+      "mode": 0,
+      "properties": {"text": ""},
+      "widgets_values": ["🎭 VARUN MAYYA AVATAR CLONING PIPELINE v7.0\n\n═══════════════════════════════════════════\nKEY INSIGHT: Uses TARGET's OWN VIDEO as motion\nreference - preserves authentic mannerisms!\n═══════════════════════════════════════════\n\n📋 BEFORE RUNNING:\n1. Place reference_voice.wav in input/ folder\n2. Place motion_reference.mp4 in input/ folder  \n3. Place portrait.png in input/ folder\n4. Enter your script text in the TTS Text node\n\n⚠️ Models needed in diffusion_models folder:\n- FantasyPortrait model\n- Wan 2.1 I2V 14B model"],
+      "color": "#2a363b",
+      "bgcolor": "#3f5159"
+    },
+    {
+      "id": 5,
+      "type": "LoadAudio",
+      "pos": [50, 330],
+      "size": [315, 124],
+      "flags": {},
+      "order": 1,
+      "mode": 0,
+      "outputs": [
+        {"name": "AUDIO", "type": "AUDIO", "links": [1], "slot_index": 0}
+      ],
+      "properties": {"Node name for S&R": "LoadAudio"},
+      "widgets_values": ["reference_voice.wav", null, null]
+    },
+    {
+      "id": 6,
+      "type": "Note",
+      "pos": [50, 300],
+      "size": [315, 25],
+      "flags": {},
+      "order": 2,
+      "mode": 0,
+      "properties": {"text": ""},
+      "widgets_values": ["🎙️ Voice Reference - PUT IN input/ FOLDER"],
+      "color": "#233",
+      "bgcolor": "#355"
+    },
+    {
+      "id": 8,
+      "type": "ChatterBoxEngineNode",
+      "pos": [50, 500],
+      "size": [315, 226],
+      "flags": {},
+      "order": 3,
+      "mode": 0,
+      "outputs": [
+        {"name": "TTS_ENGINE", "type": "TTS_ENGINE", "links": [3], "slot_index": 0}
+      ],
+      "properties": {"Node name for S&R": "ChatterBoxEngineNode"},
+      "widgets_values": [
+        "English",
+        "auto",
+        0.5,
+        0.8,
+        0.5,
+        "hmm ,, {seg} hmm ,,"
+      ]
+    },
+    {
+      "id": 15,
+      "type": "UnifiedTTSTextNode",
+      "pos": [415, 330],
+      "size": [400, 390],
+      "flags": {},
+      "order": 8,
+      "mode": 0,
+      "inputs": [
+        {"name": "TTS_engine", "type": "TTS_ENGINE", "link": 3},
+        {"name": "opt_narrator", "type": "*", "link": 1}
+      ],
+      "outputs": [
+        {"name": "audio", "type": "AUDIO", "links": [5, 70, 73], "slot_index": 0},
+        {"name": "generation_info", "type": "STRING", "links": null}
+      ],
+      "properties": {"Node name for S&R": "UnifiedTTSTextNode"},
+      "widgets_values": [
+        "Hello everyone, and welcome to this demonstration of cutting-edge AI avatar technology. What you're seeing right now is a fully synthetic video, generated entirely by neural networks. The voice you're hearing has been cloned from just a few seconds of reference audio, capturing the unique tonal qualities, rhythm, and speaking patterns of the original speaker. Pretty remarkable, isn't it? The facial movements, expressions, and lip synchronization are all being generated in real-time to match the audio perfectly. This technology has incredible potential across many industries. Think about content creation, where creators can produce videos without expensive equipment or studio time. Consider virtual assistants that can have natural, human-like conversations. Or personalized education, where AI tutors can adapt to each student's learning style. Notice how natural the eye movements and subtle micro-expressions appear throughout this video. The future of digital communication is truly here, and it's becoming more realistic with each passing day. Thank you for watching this demonstration.",
+        "none",
+        12345,
+        "fixed",
+        true,
+        400,
+        "auto",
+        100,
+        true,
+        0
+      ]
+    },
+    {
+      "id": 16,
+      "type": "Note",
+      "pos": [415, 300],
+      "size": [400, 25],
+      "flags": {},
+      "order": 4,
+      "mode": 0,
+      "properties": {"text": ""},
+      "widgets_values": ["🎤 TTS Text - Enter your script here"],
+      "color": "#323",
+      "bgcolor": "#535"
+    },
+    {
+      "id": 22,
+      "type": "SaveAudio",
+      "pos": [865, 330],
+      "size": [315, 100],
+      "flags": {},
+      "order": 12,
+      "mode": 0,
+      "inputs": [
+        {"name": "audio", "type": "AUDIO", "link": 5}
+      ],
+      "properties": {"Node name for S&R": "SaveAudio"},
+      "widgets_values": ["cloned_voice", "wav"]
+    },
+    {
+      "id": 23,
+      "type": "Note",
+      "pos": [865, 300],
+      "size": [315, 25],
+      "flags": {},
+      "order": 5,
+      "mode": 0,
+      "properties": {"text": ""},
+      "widgets_values": ["💾 Save cloned voice audio"],
+      "color": "#323",
+      "bgcolor": "#535"
+    },
+    {
+      "id": 25,
+      "type": "VHS_LoadVideo",
+      "pos": [50, 800],
+      "size": [315, 300],
+      "flags": {},
+      "order": 6,
+      "mode": 0,
+      "outputs": [
+        {"name": "IMAGE", "type": "IMAGE", "links": [15], "slot_index": 0},
+        {"name": "frame_count", "type": "INT", "links": null},
+        {"name": "audio", "type": "AUDIO", "links": null},
+        {"name": "video_info", "type": "VHS_VIDEOINFO", "links": null}
+      ],
+      "properties": {"Node name for S&R": "VHS_LoadVideo"},
+      "widgets_values": {
+        "video": "motion_reference.mp4",
+        "force_rate": 24,
+        "force_size": "Disabled",
+        "custom_width": 512,
+        "custom_height": 512,
+        "frame_load_cap": 480,
+        "skip_first_frames": 0,
+        "select_every_nth": 1
+      }
+    },
+    {
+      "id": 26,
+      "type": "Note",
+      "pos": [50, 770],
+      "size": [315, 25],
+      "flags": {},
+      "order": 7,
+      "mode": 0,
+      "properties": {"text": ""},
+      "widgets_values": ["🎬 Motion Video - PUT IN input/ FOLDER"],
+      "color": "#332",
+      "bgcolor": "#553"
+    },
+    {
+      "id": 30,
+      "type": "FantasyPortraitModelLoader",
+      "pos": [415, 800],
+      "size": [400, 82],
+      "flags": {},
+      "order": 9,
+      "mode": 0,
+      "outputs": [
+        {"name": "model", "type": "FANTASYPORTRAITMODEL", "links": [20], "slot_index": 0}
+      ],
+      "properties": {"Node name for S&R": "FantasyPortraitModelLoader"},
+      "widgets_values": [
+        "WanVideo\\FantasyPortrait\\Wan2_1_FantasyPortrait_fp16.safetensors",
+        "fp16"
+      ]
+    },
+    {
+      "id": 31,
+      "type": "FantasyPortraitFaceDetector",
+      "pos": [415, 920],
+      "size": [400, 150],
+      "flags": {},
+      "order": 15,
+      "mode": 0,
+      "inputs": [
+        {"name": "portrait_model", "type": "FANTASYPORTRAITMODEL", "link": 20},
+        {"name": "images", "type": "IMAGE", "link": 15}
+      ],
+      "outputs": [
+        {"name": "portrait_embeds", "type": "PORTRAIT_EMBEDS", "links": [30], "slot_index": 0},
+        {"name": "bbox", "type": "BBOX", "links": null},
+        {"name": "landmarks", "type": "LANDMARKS", "links": null}
+      ],
+      "properties": {"Node name for S&R": "FantasyPortraitFaceDetector"},
+      "widgets_values": [1.0, 1.0, 1.0, "cuda"]
+    },
+    {
+      "id": 32,
+      "type": "Note",
+      "pos": [415, 770],
+      "size": [400, 25],
+      "flags": {},
+      "order": 10,
+      "mode": 0,
+      "properties": {"text": ""},
+      "widgets_values": ["🎭 Fantasy Portrait - Extract motion embeddings"],
+      "color": "#232",
+      "bgcolor": "#353"
+    },
+    {
+      "id": 36,
+      "type": "Wav2VecModelLoader",
+      "pos": [50, 1150],
+      "size": [315, 58],
+      "flags": {},
+      "order": 11,
+      "mode": 0,
+      "outputs": [
+        {"name": "wav2vec_model", "type": "WAV2VECMODEL", "links": [36], "slot_index": 0}
+      ],
+      "properties": {"Node name for S&R": "Wav2VecModelLoader"},
+      "widgets_values": ["wav2vec2-chinese-base_fp16.safetensors"]
+    },
+    {
+      "id": 37,
+      "type": "MultiTalkWav2VecEmbeds",
+      "pos": [415, 1150],
+      "size": [400, 218],
+      "flags": {},
+      "order": 16,
+      "mode": 0,
+      "inputs": [
+        {"name": "wav2vec_model", "type": "WAV2VECMODEL", "link": 36},
+        {"name": "audio_1", "type": "AUDIO", "link": 70}
+      ],
+      "outputs": [
+        {"name": "multitalk_embeds", "type": "MULTITALK_EMBEDS", "links": [40], "slot_index": 0},
+        {"name": "audio", "type": "AUDIO", "links": null},
+        {"name": "num_frames", "type": "INT", "links": [41], "slot_index": 2}
+      ],
+      "properties": {"Node name for S&R": "MultiTalkWav2VecEmbeds"},
+      "widgets_values": [true, 81, 24.0, 1.0, 1.0, "para"]
+    },
+    {
+      "id": 38,
+      "type": "Note",
+      "pos": [50, 1120],
+      "size": [315, 25],
+      "flags": {},
+      "order": 13,
+      "mode": 0,
+      "properties": {"text": ""},
+      "widgets_values": ["👄 MultiTalk - Audio to lip sync embeds"],
+      "color": "#223",
+      "bgcolor": "#335"
+    },
+    {
+      "id": 40,
+      "type": "LoadImage",
+      "pos": [865, 800],
+      "size": [315, 314],
+      "flags": {},
+      "order": 14,
+      "mode": 0,
+      "outputs": [
+        {"name": "IMAGE", "type": "IMAGE", "links": [45], "slot_index": 0},
+        {"name": "MASK", "type": "MASK", "links": null}
+      ],
+      "properties": {"Node name for S&R": "LoadImage"},
+      "widgets_values": ["portrait.png", "image"]
+    },
+    {
+      "id": 41,
+      "type": "Note",
+      "pos": [865, 770],
+      "size": [315, 25],
+      "flags": {},
+      "order": 17,
+      "mode": 0,
+      "properties": {"text": ""},
+      "widgets_values": ["🖼️ Portrait - PUT IN input/ FOLDER"],
+      "color": "#322",
+      "bgcolor": "#533"
+    },
+    {
+      "id": 61,
+      "type": "MultiTalkModelLoader",
+      "pos": [50, 1250],
+      "size": [400, 58],
+      "flags": {},
+      "order": 17,
+      "mode": 0,
+      "outputs": [
+        {"name": "model", "type": "MULTITALKMODEL", "links": [71], "slot_index": 0}
+      ],
+      "properties": {"Node name for S&R": "MultiTalkModelLoader"},
+      "widgets_values": [
+        "WanVideo\\fp8_scaled_kj\\InfiniteTalk\\Wan2_1-InfiniteTalk-Single_fp8_e4m3fn_scaled_KJ.safetensors"
+      ]
+    },
+    {
+      "id": 62,
+      "type": "Note",
+      "pos": [50, 1220],
+      "size": [400, 25],
+      "flags": {},
+      "order": 16,
+      "mode": 0,
+      "properties": {"text": ""},
+      "widgets_values": ["🎤 InfiniteTalk Model - Patches Wan model for audio lip-sync"],
+      "color": "#323",
+      "bgcolor": "#535"
+    },
+    {
+      "id": 42,
+      "type": "WanVideoModelLoader",
+      "pos": [50, 1450],
+      "size": [400, 280],
+      "flags": {},
+      "order": 18,
+      "mode": 0,
+      "inputs": [
+        {"name": "multitalk_model", "type": "MULTITALKMODEL", "link": 71},
+        {"name": "fantasyportrait_model", "type": "FANTASYPORTRAITMODEL", "link": 72}
+      ],
+      "outputs": [
+        {"name": "model", "type": "WANVIDEOMODEL", "links": [50], "slot_index": 0}
+      ],
+      "properties": {"Node name for S&R": "WanVideoModelLoader"},
+      "widgets_values": [
+        "WanVideo\\fp8_scaled_kj\\I2V\\Wan2_1-I2V-14B-720p_fp8_e4m3fn_scaled_KJ.safetensors",
+        "bf16",
+        "disabled",
+        "offload_device"
+      ]
+    },
+    {
+      "id": 43,
+      "type": "WanVideoVAELoader",
+      "pos": [50, 1720],
+      "size": [400, 82],
+      "flags": {},
+      "order": 19,
+      "mode": 0,
+      "outputs": [
+        {"name": "vae", "type": "WANVAE", "links": [60, 61], "slot_index": 0}
+      ],
+      "properties": {"Node name for S&R": "WanVideoVAELoader"},
+      "widgets_values": ["split_files\\vae\\wan_2.1_vae.safetensors", "bf16"]
+    },
+    {
+      "id": 44,
+      "type": "LoadWanVideoT5TextEncoder",
+      "pos": [500, 1450],
+      "size": [400, 106],
+      "flags": {},
+      "order": 20,
+      "mode": 0,
+      "outputs": [
+        {"name": "t5", "type": "WANTEXTENCODER", "links": [51], "slot_index": 0}
+      ],
+      "properties": {"Node name for S&R": "LoadWanVideoT5TextEncoder"},
+      "widgets_values": ["umt5-xxl-enc-bf16.safetensors", "bf16", "offload_device"]
+    },
+    {
+      "id": 45,
+      "type": "WanVideoTextEncode",
+      "pos": [500, 1600],
+      "size": [400, 178],
+      "flags": {},
+      "order": 23,
+      "mode": 0,
+      "inputs": [
+        {"name": "t5", "type": "WANTEXTENCODER", "link": 51}
+      ],
+      "outputs": [
+        {"name": "text_embeds", "type": "WANVIDEOTEXTEMBEDS", "links": [52], "slot_index": 0}
+      ],
+      "properties": {"Node name for S&R": "WanVideoTextEncode"},
+      "widgets_values": [
+        "photorealistic talking head portrait, natural lighting, professional quality, 4k, detailed face, realistic skin texture",
+        "blurry, distorted, unnatural, animation, cartoon, drawing, low quality, pixelated"
+      ]
+    },
+    {
+      "id": 46,
+      "type": "WanVideoImageToVideoEncode",
+      "pos": [950, 1450],
+      "size": [350, 250],
+      "flags": {},
+      "order": 24,
+      "mode": 0,
+      "inputs": [
+        {"name": "vae", "type": "WANVAE", "link": 60},
+        {"name": "start_image", "type": "IMAGE", "link": 45}
+      ],
+      "outputs": [
+        {"name": "image_embeds", "type": "WANVIDIMAGE_EMBEDS", "links": [53], "slot_index": 0}
+      ],
+      "properties": {"Node name for S&R": "WanVideoImageToVideoEncode"},
+      "widgets_values": [832, 480, 480, 0.0, 1.0, 1.0, true]
+    },
+    {
+      "id": 48,
+      "type": "Note",
+      "pos": [50, 1420],
+      "size": [400, 25],
+      "flags": {},
+      "order": 21,
+      "mode": 0,
+      "properties": {"text": ""},
+      "widgets_values": ["🤖 Wan 2.1 14B + T5 Encoder + VAE"],
+      "color": "#223",
+      "bgcolor": "#335"
+    },
+    {
+      "id": 49,
+      "type": "WanVideoAddFantasyPortrait",
+      "pos": [950, 1640],
+      "size": [350, 150],
+      "flags": {},
+      "order": 25,
+      "mode": 0,
+      "inputs": [
+        {"name": "embeds", "type": "WANVIDIMAGE_EMBEDS", "link": 53},
+        {"name": "portrait_embeds", "type": "PORTRAIT_EMBEDS", "link": 30}
+      ],
+      "outputs": [
+        {"name": "image_embeds", "type": "WANVIDIMAGE_EMBEDS", "links": [54], "slot_index": 0}
+      ],
+      "properties": {"Node name for S&R": "WanVideoAddFantasyPortrait"},
+      "widgets_values": [1.0, 0.0, 1.0, 1.0]
+    },
+    {
+      "id": 50,
+      "type": "WanVideoSampler",
+      "pos": [1350, 1450],
+      "size": [400, 350],
+      "flags": {},
+      "order": 26,
+      "mode": 0,
+      "inputs": [
+        {"name": "model", "type": "WANVIDEOMODEL", "link": 50},
+        {"name": "image_embeds", "type": "WANVIDIMAGE_EMBEDS", "link": 54},
+        {"name": "text_embeds", "type": "WANVIDEOTEXTEMBEDS", "link": 52},
+        {"name": "multitalk_embeds", "type": "MULTITALK_EMBEDS", "link": 40}
+      ],
+      "outputs": [
+        {"name": "samples", "type": "LATENT", "links": [57], "slot_index": 0},
+        {"name": "denoised_samples", "type": "LATENT", "links": null}
+      ],
+      "properties": {"Node name for S&R": "WanVideoSampler"},
+      "widgets_values": [30, 6.0, 5.0, 12345, true, "unipc"]
+    },
+    {
+      "id": 51,
+      "type": "WanVideoDecode",
+      "pos": [1800, 1450],
+      "size": [350, 200],
+      "flags": {},
+      "order": 27,
+      "mode": 0,
+      "inputs": [
+        {"name": "vae", "type": "WANVAE", "link": 61},
+        {"name": "samples", "type": "LATENT", "link": 57}
+      ],
+      "outputs": [
+        {"name": "images", "type": "IMAGE", "links": [58], "slot_index": 0}
+      ],
+      "properties": {"Node name for S&R": "WanVideoDecode"},
+      "widgets_values": [false, 272, 272, 144, 128]
+    },
+    {
+      "id": 52,
+      "type": "VHS_VideoCombine",
+      "pos": [1800, 1700],
+      "size": [350, 290],
+      "flags": {},
+      "order": 28,
+      "mode": 0,
+      "inputs": [
+        {"name": "images", "type": "IMAGE", "link": 58},
+        {"name": "audio", "type": "AUDIO", "link": 73}
+      ],
+      "outputs": [
+        {"name": "Filenames", "type": "VHS_FILENAMES", "links": null}
+      ],
+      "properties": {"Node name for S&R": "VHS_VideoCombine"},
+      "widgets_values": {
+        "frame_rate": 24,
+        "loop_count": 0,
+        "filename_prefix": "avatar_clone",
+        "format": "video/h264-mp4",
+        "pix_fmt": "yuv420p",
+        "crf": 19,
+        "save_metadata": true,
+        "pingpong": false,
+        "save_output": true,
+        "videopreview": {"hidden": false, "paused": false, "params": {}}
+      }
+    },
+    {
+      "id": 55,
+      "type": "Note",
+      "pos": [1350, 1420],
+      "size": [400, 25],
+      "flags": {},
+      "order": 22,
+      "mode": 0,
+      "properties": {"text": ""},
+      "widgets_values": ["🎬 WAN VIDEO SAMPLER - Generate video frames"],
+      "color": "#223",
+      "bgcolor": "#335"
+    },
+    {
+      "id": 56,
+      "type": "Note",
+      "pos": [1800, 1420],
+      "size": [350, 25],
+      "flags": {},
+      "order": 29,
+      "mode": 0,
+      "properties": {"text": ""},
+      "widgets_values": ["📹 OUTPUT - Final avatar video with audio"],
+      "color": "#232",
+      "bgcolor": "#353"
+    }
+  ],
+  "links": [
+    [1, 5, 0, 15, 1, "*"],
+    [3, 8, 0, 15, 0, "TTS_ENGINE"],
+    [5, 15, 0, 22, 0, "AUDIO"],
+    [15, 25, 0, 31, 1, "IMAGE"],
+    [20, 30, 0, 31, 0, "FANTASYPORTRAITMODEL"],
+    [30, 31, 0, 49, 1, "PORTRAIT_EMBEDS"],
+    [36, 36, 0, 37, 0, "WAV2VECMODEL"],
+    [40, 37, 0, 50, 3, "MULTITALK_EMBEDS"],
+    [45, 40, 0, 46, 1, "IMAGE"],
+    [50, 42, 0, 50, 0, "WANVIDEOMODEL"],
+    [51, 44, 0, 45, 0, "WANTEXTENCODER"],
+    [52, 45, 0, 50, 2, "WANVIDEOTEXTEMBEDS"],
+    [53, 46, 0, 49, 0, "WANVIDIMAGE_EMBEDS"],
+    [54, 49, 0, 50, 1, "WANVIDIMAGE_EMBEDS"],
+    [57, 50, 0, 51, 1, "LATENT"],
+    [58, 51, 0, 52, 0, "IMAGE"],
+    [60, 43, 0, 46, 0, "WANVAE"],
+    [61, 43, 0, 51, 0, "WANVAE"],
+    [70, 15, 0, 37, 1, "AUDIO"],
+    [71, 61, 0, 42, 0, "MULTITALKMODEL"],
+    [72, 30, 0, 42, 1, "FANTASYPORTRAITMODEL"],
+    [73, 15, 0, 52, 1, "AUDIO"]
+  ],
+  "groups": [
+    {
+      "title": "🎙️ STAGE 1: VOICE CLONING (ChatterBox TTS)",
+      "bounding": [40, 260, 1160, 480],
+      "color": "#3f789e",
+      "font_size": 24
+    },
+    {
+      "title": "🎭 STAGE 2: MOTION EXTRACTION (Fantasy Portrait)",
+      "bounding": [40, 750, 1160, 350],
+      "color": "#8e7f3f",
+      "font_size": 24
+    },
+    {
+      "title": "👄 STAGE 3: LIP SYNC (Wav2Vec2)",
+      "bounding": [40, 1100, 800, 290],
+      "color": "#5f8e3f",
+      "font_size": 24
+    },
+    {
+      "title": "🤖 STAGE 4: VIDEO SYNTHESIS (Wan 2.1 14B)",
+      "bounding": [40, 1400, 2140, 620],
+      "color": "#8e3f5a",
+      "font_size": 24
+    }
+  ],
+  "config": {},
+  "extra": {
+    "ds": {"scale": 0.6, "offset": [0, 0]}
+  },
+  "version": 0.4
+}
