@@ -1,0 +1,86 @@
+{
+  "1": {
+    "class_type": "UNETLoader",
+    "inputs": {
+      "unet_name": "z_image_turbo_bf16.safetensors",
+      "weight_dtype": "default"
+    }
+  },
+  "2": {
+    "class_type": "CLIPLoader",
+    "inputs": {
+      "clip_name": "qwen_3_4b.safetensors",
+      "type": "stable_diffusion"
+    }
+  },
+  "3": {
+    "class_type": "VAELoader",
+    "inputs": {
+      "vae_name": "ae.safetensors"
+    }
+  },
+  "4": {
+    "class_type": "StylePromptEncoder //ZImagePowerNodes",
+    "inputs": {
+      "category": "photo",
+      "style": "None",
+      "text": "A futuristic cyberpunk city with neon lights and flying cars, high detail, 8k",
+      "clip": [
+        "2",
+        0
+      ]
+    }
+  },
+  "5": {
+    "class_type": "EmptyZImageLatentImage //ZImagePowerNodes",
+    "inputs": {
+      "landscape": false,
+      "ratio": "1:1  (square)",
+      "size": "medium (recommended)",
+      "batch_size": 1
+    }
+  },
+  "6": {
+    "class_type": "ZSamplerTurbo //ZImagePowerNodes",
+    "inputs": {
+      "model": [
+        "1",
+        0
+      ],
+      "positive": [
+        "4",
+        0
+      ],
+      "latent_input": [
+        "5",
+        0
+      ],
+      "seed": 1,
+      "steps": 9,
+      "denoise": 1
+    }
+  },
+  "7": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "6",
+        0
+      ],
+      "vae": [
+        "3",
+        0
+      ]
+    }
+  },
+  "8": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "images": [
+        "7",
+        0
+      ],
+      "filename_prefix": "Z-Image-Output"
+    }
+  }
+}

@@ -1,0 +1,14 @@
+{
+    "venvPath": ".",
+    "venv": "venv",
+    "pythonVersion": "3.12",
+    "typeCheckingMode": "off",
+    "reportMissingImports": false,
+    "reportMissingModuleSource": false,
+    "reportGeneralTypeIssues": false,
+    "exclude": [
+        "venv",
+        "__pycache__",
+        "custom_nodes"
+    ]
+}

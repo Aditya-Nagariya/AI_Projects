@@ -1,0 +1,25 @@
+[environment]
+# Point ty to the venv/ directory (ty only auto-discovers .venv, not venv/)
+python = "./venv"
+# Project root for first-party module resolution (ComfyUI uses flat layout)
+root = ["."]
+
+[src]
+# Exclude ComfyUI core framework files from type checking.
+# These files use heavily dynamic patterns (async destructuring, dynamic class
+# attributes, metaclass tricks) that produce many false-positive type errors.
+exclude = [
+    "comfy",
+    "comfy_api",
+    "comfy_api_nodes",
+    "comfy_execution",
+    "comfy_extras",
+    "comfy_config",
+    "execution.py",
+    "nodes.py",
+    "server.py",
+    "main.py",
+    "folder_paths.py",
+    "latent_preview.py",
+    "reproduce_issue.py",
+]
